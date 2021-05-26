@@ -1,5 +1,8 @@
 const express = require('express');
 const LoginController = require('./controllers/LoginController');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger/swagger.json');
+const AppConstants = require('./enum/AppConstants');
 
 class App{
     #controllers;
@@ -19,6 +22,9 @@ class App{
         //registra os middlewares para fazer a conversão das requisições da API
         this.express.use(express.urlencoded({extended: true}));
         this.express.use(express.json());
+
+        //configura o swagger da aplicação para servir a documentação
+        this.express.use(`${AppConstants.BASE_API_URL}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
         this.express.use((req, res, next) => {
             console.log(`requisição recebida, url = ${req.url}. método http = ${req.method}`);
