@@ -1,4 +1,5 @@
 const HttpController = require('./HttpController');
+const LoginService = require('../services/LoginService')
 
 class LoginController extends HttpController{
     //sobrescreve o método da classe base HttpController.js
@@ -22,10 +23,11 @@ class LoginController extends HttpController{
             });
         }
 
+        const service = new LoginService();
+        const resultado = service.logar(body.login, body.senha);
+
         //devolve a resposta mockada do login em formato json
-        res.json({
-            token: 'token gerado pela api'
-        });
+        res.json(resultado);
     }
 }
 

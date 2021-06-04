@@ -19,6 +19,7 @@
   "homepage": "https://github.com/izahonorato/gerenciador-tarefas-nodejs#readme",
   "dependencies": {
     "express": "4.17.1",
+    "jsonwebtoken": "8.5.1",
     "swagger-ui-express": "4.1.6"
   },
   "devDependencies": {
