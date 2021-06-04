@@ -3,8 +3,10 @@ const LoginController = require('./controllers/LoginController');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger/swagger.json');
 const AppConstants = require('./enum/AppConstants');
+const UsuarioController = require('./controllers/UsuarioController');
 
 const logger = require('./middlewares/logger');
+const jwt = require('./middlewares/jwt');
 
 class App{
     #controllers;
@@ -21,22 +23,28 @@ class App{
         //cria a instancia do express para gerenciar o servidor
         this.express = express();
 
+        this.express.use(logger);
+
+
         //registra os middlewares para fazer a conversão das requisições da API
         this.express.use(express.urlencoded({extended: true}));
         this.express.use(express.json());
+
+        //registra o middleware do jwt p fazer validação do acesso as rotas através das requisições
+        this.express.use(jwt);
 
         //configura o swagger da aplicação para servir a documentação
         this.express.use(`${AppConstants.BASE_API_URL}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 
 
-        this.express.use(logger);
     }
 
     #carregarControllers = () => {
         //atribui para propriedade #controllers a lista de controllers disponíveis da aplicação
         this.#controllers = [
-            new LoginController(this.express)
+            new LoginController(this.express),
+            new UsuarioController(this.express)
         ];
     }
 

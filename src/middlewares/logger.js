@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-    const traceId = Math.random()*99999;
+    const traceId = Math.ceil(Math.random()*99999);
     const logger = {
         //exibe msgs de erro
         error: (mensagem, ...parametrosExtras) => {
