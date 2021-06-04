@@ -4,6 +4,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger/swagger.json');
 const AppConstants = require('./enum/AppConstants');
 
+const logger = require('./middlewares/logger');
+
 class App{
     #controllers;
     start(){
@@ -26,10 +28,9 @@ class App{
         //configura o swagger da aplicação para servir a documentação
         this.express.use(`${AppConstants.BASE_API_URL}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-        this.express.use((req, res, next) => {
-            console.log(`requisição recebida, url = ${req.url}. método http = ${req.method}`);
-            next();
-        });
+
+
+        this.express.use(logger);
     }
 
     #carregarControllers = () => {
